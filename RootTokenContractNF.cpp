@@ -119,6 +119,12 @@ public:
     return wallet_code_;
   }
 
+  __always_inline cell getWalletCode_response() {
+    set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
+    return wallet_code_;
+  }
+
+
   __always_inline TokenId getLastMintedToken() {
     return total_supply_;
   }

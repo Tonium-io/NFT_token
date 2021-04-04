@@ -161,6 +161,16 @@
     { "name":"value0", "type":"address" }
     ],
     "id": "0x19"
+  },
+  {
+    "name": "getWalletCode_response",
+    "inputs": [
+    { "name":"_answer_id", "type":"uint32" }
+    ],
+    "outputs": [
+    { "name":"value0", "type":"cell" }
+    ],
+    "id": "0x1a"
   }
   ],
   "events": [
