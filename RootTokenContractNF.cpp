@@ -50,20 +50,17 @@ public:
       ++total_granted_;
     return dest;
   }
-    __always_inline
-  lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, TokenId tokenId, WalletGramsType grams) {
-    require(root_public_key_ == tvm_pubkey(), error_code::message_sender_is_not_my_owner);
-    require(!tokenId || tokens_.contains(tokenId), error_code::token_not_minted);
-    tvm_accept();
+  
+  __always_inline
+  lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams) {
     auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey);
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get())).
-      call<&ITONTokenWallet::accept>(tokenId);
-    if (tokenId)
-      ++total_granted_;
+      call<&ITONTokenWallet::accept>(TokenId(0));
     set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
     return dest;
   }
+  
 
   __always_inline
   void grant(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) {
