@@ -56,6 +56,9 @@ __interface IRootTokenContract {
   __attribute__((internal, noaccept, answer_id))
   cell getWalletCode_response() = 26;
   
+  __attribute__((external, noaccept, dyn_chain_parse))
+  lazy<MsgAddressInt> deployWallet_user(int8 workchain_id, uint256 pubkey, WalletGramsType grams) = 27;
+  
 
 };
 

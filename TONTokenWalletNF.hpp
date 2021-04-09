@@ -13,6 +13,7 @@ using WalletGramsType = uint128;
 using TokensType = uint128;
 using TokenId = uint128;
 
+
 static constexpr unsigned TOKEN_WALLET_TIMESTAMP_DELAY = 100;
 using wallet_replay_protection_t = replay_attack_protection::timestamp<TOKEN_WALLET_TIMESTAMP_DELAY>;
 
@@ -20,6 +21,8 @@ struct allowance_info {
   lazy<MsgAddressInt> spender;
   TokenId allowedToken;
 };
+
+
 
 // ===== TON Token wallet ===== //
 __interface ITONTokenWallet {
@@ -98,6 +101,7 @@ struct DTONTokenWallet {
   cell code_;
   std::optional<allowance_info> allowance_;
   dict_set<TokenId> tokens_;
+  uint64 timestamp;
 };
 
 struct ETONTokenWallet {

@@ -24,6 +24,7 @@ public:
     static constexpr unsigned zero_token_id                     = 110;
     static constexpr unsigned zero_dest_addr                    = 111;
   };
+  uint64 timestamp;
 
   __always_inline
   void constructor(bytes name, bytes symbol, uint8 decimals,
@@ -72,11 +73,12 @@ public:
 
   __always_inline
   void internalTransfer(TokenId tokenId, uint256 pubkey) {
-    uint256 expected_address = expected_sender_address(pubkey);
-    auto sender = int_sender();
+    require(root_public_key_ == tvm_pubkey(),error_code::message_sender_is_not_good_wallet);
+    //uint256 expected_address = expected_sender_address(pubkey);
+    //auto sender = int_sender();
 
-    require(std::get<addr_std>(sender()).address == expected_address,
-            error_code::message_sender_is_not_good_wallet);
+    //require(std::get<addr_std>(sender()).address == expected_address,
+    //        error_code::message_sender_is_not_good_wallet);
     require(tokenId > 0, error_code::zero_token_id);
 
     tvm_accept();

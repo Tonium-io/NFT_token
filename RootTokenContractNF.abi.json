@@ -170,6 +170,18 @@
     { "name":"value0", "type":"cell" }
     ],
     "id": "0x1a"
+  },
+  {
+    "name": "deployWallet_user",
+    "inputs": [
+    { "name":"workchain_id", "type":"int8" },
+    { "name":"pubkey", "type":"uint256" },
+    { "name":"grams", "type":"uint128" }
+    ],
+    "outputs": [
+    { "name":"value0", "type":"address" }
+    ],
+    "id": "0x1b"
   }
   ],
   "events": [

@@ -3,6 +3,7 @@
 
 #include <tvm/contract.hpp>
 #include <tvm/smart_switcher.hpp>
+#include <tvm/smart_contract_info.hpp>
 #include <tvm/contract_handle.hpp>
 #include <tvm/default_support_functions.hpp>
 
@@ -58,6 +59,15 @@ public:
     dest_handle.deploy(wallet_init, Grams(grams.get())).
       call<&ITONTokenWallet::accept>(TokenId(0));
     set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
+    return dest;
+  }
+  
+  __always_inline
+  lazy<MsgAddressInt> deployWallet_user(int8 workchain_id, uint256 pubkey, WalletGramsType grams) {
+    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey);
+    contract_handle<ITONTokenWallet> dest_handle(dest);
+    dest_handle.deploy(wallet_init, Grams(grams.get())).
+      call<&ITONTokenWallet::accept>(TokenId(0));
     return dest;
   }
   
@@ -173,7 +183,7 @@ private:
     DTONTokenWallet wallet_data {
       name_, symbol_, decimals_,
       root_public_key_, pubkey,
-      lazy<MsgAddressInt>{tvm_myaddr()}, wallet_code_, {}, {}
+      lazy<MsgAddressInt>{tvm_myaddr()}, wallet_code_, {}, {}, uint_t<64>{smart_contract_info::now()}
     };
     auto [wallet_init, dest_addr] = prepare_wallet_state_init_and_addr(wallet_data);
     lazy<MsgAddressInt> dest{ MsgAddressInt{ addr_std { {}, {}, workchain_id, dest_addr } } };
