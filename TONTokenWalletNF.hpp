@@ -21,6 +21,7 @@ struct allowance_info {
   lazy<MsgAddressInt> spender;
   TokenId allowedToken;
 };
+uint64 timestamp;
 
 
 
