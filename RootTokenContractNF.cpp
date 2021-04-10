@@ -42,7 +42,7 @@ public:
 
     tvm_accept();
 
-    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey);
+    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,uint_t<64>{smart_contract_info::now()});
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get())).
       call<&ITONTokenWallet::accept>(tokenId);
@@ -54,7 +54,7 @@ public:
   
   __always_inline
   lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams) {
-    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey);
+    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,uint_t<64>{smart_contract_info::now()});
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get())).
       call<&ITONTokenWallet::accept>(TokenId(0));
@@ -64,7 +64,7 @@ public:
   
   __always_inline
   lazy<MsgAddressInt> deployWallet_user(int8 workchain_id, uint256 pubkey, WalletGramsType grams) {
-    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey);
+    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,uint_t<64>{smart_contract_info::now()});
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get())).
       call<&ITONTokenWallet::accept>(TokenId(0));
@@ -137,13 +137,13 @@ public:
   }
 
   __always_inline
-  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey) {
-    return calc_wallet_init(workchain_id, pubkey).second;
+  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 timestamp) {
+    return calc_wallet_init(workchain_id, pubkey,timestamp).second;
   }
   __always_inline
-  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey) {
+  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 timestamp) {
     set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
-    return calc_wallet_init(workchain_id, pubkey).second;
+    return calc_wallet_init(workchain_id, pubkey, timestamp).second;
   }
 
 
@@ -179,11 +179,11 @@ public:
   DEFAULT_SUPPORT_FUNCTIONS(IRootTokenContract, root_replay_protection_t)
 private:
   __always_inline
-  std::pair<StateInit, lazy<MsgAddressInt>> calc_wallet_init(int8 workchain_id, uint256 pubkey) {
+  std::pair<StateInit, lazy<MsgAddressInt>> calc_wallet_init(int8 workchain_id, uint256 pubkey, uint64 timestamp) {
     DTONTokenWallet wallet_data {
       name_, symbol_, decimals_,
       root_public_key_, pubkey,
-      lazy<MsgAddressInt>{tvm_myaddr()}, wallet_code_, uint_t<64>{smart_contract_info::now()},  {}, {}, 
+      lazy<MsgAddressInt>{tvm_myaddr()}, wallet_code_, timestamp,  {}, {}, 
     };
     auto [wallet_init, dest_addr] = prepare_wallet_state_init_and_addr(wallet_data);
     lazy<MsgAddressInt> dest{ MsgAddressInt{ addr_std { {}, {}, workchain_id, dest_addr } } };

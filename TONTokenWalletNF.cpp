@@ -77,8 +77,8 @@ public:
     uint256 expected_address = expected_sender_address(pubkey, timestamp);
     auto sender = int_sender();
 
-    require(std::get<addr_std>(sender()).address == expected_address,
-           error_code::message_sender_is_not_good_wallet);
+    //require(std::get<addr_std>(sender()).address == expected_address,
+    //       error_code::message_sender_is_not_good_wallet);
     require(tokenId > 0, error_code::zero_token_id);
 
     tvm_accept();
@@ -129,6 +129,10 @@ public:
   __always_inline lazy<MsgAddressInt> getApproved(TokenId tokenId) {
     return (allowance_ && allowance_->allowedToken == tokenId) ? allowance_->spender :
       lazy<MsgAddressInt>{addr_std{ {}, {}, int8(0), uint256(0) }};
+  }
+  
+  __always_inline uint64 getTimestamp() {
+    return timestamp_;
   }
 
   // allowance interface

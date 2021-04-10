@@ -196,6 +196,15 @@
     { "name":"value0", "type":"uint128" }
     ],
     "id": "0x1d"
+  },
+  {
+    "name": "getTimestamp",
+    "inputs": [
+    ],
+    "outputs": [
+    { "name":"value0", "type":"uint64" }
+    ],
+    "id": "0x1e"
   }
   ],
   "events": [

@@ -88,6 +88,8 @@ __interface ITONTokenWallet {
   TokensType getBalance_response() = 28;
   __attribute__((internal, noaccept,answer_id))
   TokenId getTokenByIndex_response(TokensType index) = 29;
+  __attribute__((getter))
+  uint64 getTimestamp() = 30;
 };
 
 struct DTONTokenWallet {
