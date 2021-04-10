@@ -80,12 +80,11 @@ public:
     //require(std::get<addr_std>(sender()).address == expected_address,
     //       error_code::message_sender_is_not_good_wallet);
     //require(tokenId > 0, error_code::zero_token_id);
-
     tvm_accept();
     tvm_commit();
-    require(!tokens_.contains(tokenId), error_code::already_have_this_token);
+    //require(!tokens_.contains(tokenId), error_code::already_have_this_token);
 
-    tokens_.insert(tokenId);
+    tokens_.insert(uint_t<128>{1});
   }
 
   // getters
