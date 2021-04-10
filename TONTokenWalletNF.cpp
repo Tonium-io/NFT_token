@@ -25,8 +25,6 @@ public:
     static constexpr unsigned zero_dest_addr                    = 111;
   };
   
-  uint64 timestamp;
-
 
   __always_inline
   void constructor(bytes name, bytes symbol, uint8 decimals,
