@@ -21,8 +21,6 @@ struct allowance_info {
   lazy<MsgAddressInt> spender;
   TokenId allowedToken;
 };
-uint64 timestamp;
-
 
 
 // ===== TON Token wallet ===== //
@@ -100,9 +98,10 @@ struct DTONTokenWallet {
   uint256 wallet_public_key_;
   lazy<MsgAddressInt> root_address_;
   cell code_;
+  uint64 timestamp;
   std::optional<allowance_info> allowance_;
   dict_set<TokenId> tokens_;
-  uint64 timestamp;
+  
 };
 
 struct ETONTokenWallet {

@@ -183,7 +183,7 @@ private:
     DTONTokenWallet wallet_data {
       name_, symbol_, decimals_,
       root_public_key_, pubkey,
-      lazy<MsgAddressInt>{tvm_myaddr()}, wallet_code_, {}, {}, uint_t<64>{smart_contract_info::now()}
+      lazy<MsgAddressInt>{tvm_myaddr()}, wallet_code_, uint_t<64>{smart_contract_info::now()}, {}, {}
     };
     auto [wallet_init, dest_addr] = prepare_wallet_state_init_and_addr(wallet_data);
     lazy<MsgAddressInt> dest{ MsgAddressInt{ addr_std { {}, {}, workchain_id, dest_addr } } };
