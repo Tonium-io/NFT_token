@@ -74,12 +74,12 @@ public:
   __always_inline
   void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 timestamp) {
     //require(root_public_key_ == tvm_pubkey(),error_code::message_sender_is_not_good_wallet);
-    uint256 expected_address = expected_sender_address(pubkey, timestamp);
-    auto sender = int_sender();
+    //uint256 expected_address = expected_sender_address(pubkey, timestamp);
+    //auto sender = int_sender();
 
     //require(std::get<addr_std>(sender()).address == expected_address,
     //       error_code::message_sender_is_not_good_wallet);
-    require(tokenId > 0, error_code::zero_token_id);
+    //require(tokenId > 0, error_code::zero_token_id);
 
     tvm_accept();
     tvm_commit();
