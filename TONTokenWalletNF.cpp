@@ -52,7 +52,7 @@ public:
 
     contract_handle<ITONTokenWallet> dest_wallet(dest);
     dest_wallet(Grams(grams.get())).
-      call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_);
+      call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
 
     tokens_.erase(tokenId);
   }
@@ -72,13 +72,13 @@ public:
   }
 
   __always_inline
-  void internalTransfer(TokenId tokenId, uint256 pubkey) {
-    require(root_public_key_ == tvm_pubkey(),error_code::message_sender_is_not_good_wallet);
-    //uint256 expected_address = expected_sender_address(pubkey);
-    //auto sender = int_sender();
+  void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 timestamp) {
+    //require(root_public_key_ == tvm_pubkey(),error_code::message_sender_is_not_good_wallet);
+    uint256 expected_address = expected_sender_address(pubkey, timestamp);
+    auto sender = int_sender();
 
-    //require(std::get<addr_std>(sender()).address == expected_address,
-    //        error_code::message_sender_is_not_good_wallet);
+    require(std::get<addr_std>(sender()).address == expected_address,
+           error_code::message_sender_is_not_good_wallet);
     require(tokenId > 0, error_code::zero_token_id);
 
     tvm_accept();
@@ -213,11 +213,11 @@ public:
   // =============== Support functions ==================
   DEFAULT_SUPPORT_FUNCTIONS(ITONTokenWallet, wallet_replay_protection_t)
 private:
-  __always_inline uint256 expected_sender_address(uint256 sender_public_key) {
+  __always_inline uint256 expected_sender_address(uint256 sender_public_key, uint64 timestamp) {
     DTONTokenWallet wallet_data {
       name_, symbol_, decimals_,
       root_public_key_, sender_public_key,
-      root_address_, code_, {}, {}
+      root_address_, code_, timestamp, {}, {}
     };
     return prepare_wallet_state_init_and_addr(wallet_data).second;
   }

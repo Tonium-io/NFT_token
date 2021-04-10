@@ -41,7 +41,7 @@ __interface ITONTokenWallet {
 
   // Receive tokens from other wallet
   __attribute__((internal, noaccept))
-  void internalTransfer(TokenId tokenId, uint256 pubkey) = 14;
+  void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 timestamp) = 14;
 
   // getters
   __attribute__((getter))
@@ -98,7 +98,7 @@ struct DTONTokenWallet {
   uint256 wallet_public_key_;
   lazy<MsgAddressInt> root_address_;
   cell code_;
-  uint64 timestamp;
+  uint64 timestamp_;
   std::optional<allowance_info> allowance_;
   dict_set<TokenId> tokens_;
   
