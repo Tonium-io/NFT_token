@@ -206,9 +206,9 @@ public:
     return 0;
   }
   // default processing of unknown messages
-  __always_inline static int _fallback(cell msg, slice msg_body) {
-    return 0;
-  }
+  //__always_inline static int _fallback(cell msg, slice msg_body) {
+  //  return 0;
+  //}
 
   // =============== Support functions ==================
   DEFAULT_SUPPORT_FUNCTIONS(ITONTokenWallet, wallet_replay_protection_t)
