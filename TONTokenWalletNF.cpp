@@ -51,8 +51,8 @@ public:
     //require(tokens_.contains(tokenId), error_code::not_enough_balance);
 
     contract_handle<ITONTokenWallet> dest_wallet(dest);
-    dest_wallet(Grams(grams.get())).
-      call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
+    dest_wallet(Grams(grams.get())).internalTransfer(tokenId, wallet_public_key_,timestamp_);
+     // call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
 
     tokens_.erase(tokenId);
   }

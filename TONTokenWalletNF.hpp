@@ -40,7 +40,7 @@ __interface ITONTokenWallet {
   void accept(TokenId tokenId) = 13;
 
   // Receive tokens from other wallet
-  __attribute__((external, noaccept))
+  __attribute__((internal))
   void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 timestamp) = 14;
 
   // getters
