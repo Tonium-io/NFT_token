@@ -144,7 +144,7 @@
     { "name":"_answer_id", "type":"uint32" },
     { "name":"workchain_id", "type":"int8" },
     { "name":"pubkey", "type":"uint256" },
-    { "name":"timestamp", "type":"uint64" }
+    { "name":"nonce", "type":"uint64" }
     ],
     "outputs": [
     { "name":"value0", "type":"address" }

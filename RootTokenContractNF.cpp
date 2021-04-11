@@ -141,9 +141,9 @@ public:
     return calc_wallet_init(workchain_id, pubkey,nonce).second;
   }
   __always_inline
-  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 timestamp) {
+  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 nonce) {
     set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
-    return calc_wallet_init(workchain_id, pubkey, timestamp).second;
+    return calc_wallet_init(workchain_id, pubkey, nonce).second;
   }
 
 

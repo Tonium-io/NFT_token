@@ -49,7 +49,7 @@ __interface IRootTokenContract {
   lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 nonce) = 23;
 
   __attribute__((internal, noaccept, answer_id))
-  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 timestamp) = 24;
+  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 nonce) = 24;
   __attribute__((internal, noaccept, dyn_chain_parse, answer_id))
   lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, uint64 nonce) = 25;
 
