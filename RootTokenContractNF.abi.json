@@ -25,7 +25,8 @@
     { "name":"workchain_id", "type":"int8" },
     { "name":"pubkey", "type":"uint256" },
     { "name":"tokenId", "type":"uint128" },
-    { "name":"grams", "type":"uint128" }
+    { "name":"grams", "type":"uint128" },
+    { "name":"nonce", "type":"uint64" }
     ],
     "outputs": [
     { "name":"value0", "type":"address" }
@@ -156,7 +157,8 @@
     { "name":"_answer_id", "type":"uint32" },
     { "name":"workchain_id", "type":"int8" },
     { "name":"pubkey", "type":"uint256" },
-    { "name":"grams", "type":"uint128" }
+    { "name":"grams", "type":"uint128" },
+    { "name":"nonce", "type":"uint64" }
     ],
     "outputs": [
     { "name":"value0", "type":"address" }
@@ -178,7 +180,8 @@
     "inputs": [
     { "name":"workchain_id", "type":"int8" },
     { "name":"pubkey", "type":"uint256" },
-    { "name":"grams", "type":"uint128" }
+    { "name":"grams", "type":"uint128" },
+    { "name":"nonce", "type":"uint64" }
     ],
     "outputs": [
     { "name":"value0", "type":"address" }

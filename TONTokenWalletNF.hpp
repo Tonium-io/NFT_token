@@ -76,8 +76,7 @@ __interface ITONTokenWallet {
   void approve(lazy<MsgAddressInt> spender, TokenId tokenId) = 24;
 
   __attribute__((external, noaccept, dyn_chain_parse))
-  void transferFrom(lazy<MsgAddressInt> dest, lazy<MsgAddressInt> to, TokenId tokenId,
-                    WalletGramsType grams) = 25;
+  void transferFrom(lazy<MsgAddressInt> dest, lazy<MsgAddressInt> to, TokenId tokenId, WalletGramsType grams) = 25;
 
   __attribute__((internal))
   void internalTransferFrom(lazy<MsgAddressInt> to, TokenId tokenId) = 26;
@@ -89,7 +88,7 @@ __interface ITONTokenWallet {
   __attribute__((internal, noaccept,answer_id))
   TokenId getTokenByIndex_response(TokensType index) = 29;
   __attribute__((getter))
-  uint64 getTimestamp() = 30;
+  uint64 getNonce() = 30;
 };
 
 struct DTONTokenWallet {
@@ -100,7 +99,7 @@ struct DTONTokenWallet {
   uint256 wallet_public_key_;
   lazy<MsgAddressInt> root_address_;
   cell code_;
-  uint64 timestamp_;
+  uint64 nonce_;
   std::optional<allowance_info> allowance_;
   dict_set<TokenId> tokens_;
   

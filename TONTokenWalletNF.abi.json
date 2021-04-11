@@ -198,7 +198,7 @@
     "id": "0x1d"
   },
   {
-    "name": "getTimestamp",
+    "name": "getNonce",
     "inputs": [
     ],
     "outputs": [

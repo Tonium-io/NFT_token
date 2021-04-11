@@ -13,7 +13,7 @@ __interface IRootTokenContract {
     uint256 root_public_key, cell wallet_code) = 11;
 
   __attribute__((external, noaccept, dyn_chain_parse))
-  lazy<MsgAddressInt> deployWallet(int8 workchain_id, uint256 pubkey, TokenId tokenId, WalletGramsType grams) = 12;
+  lazy<MsgAddressInt> deployWallet(int8 workchain_id, uint256 pubkey, TokenId tokenId, WalletGramsType grams, uint64 nonce) = 12;
 
   __attribute__((external, noaccept, dyn_chain_parse))
   void grant(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) = 13;
@@ -51,13 +51,13 @@ __interface IRootTokenContract {
   __attribute__((internal, noaccept, answer_id))
   lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 timestamp) = 24;
   __attribute__((internal, noaccept, dyn_chain_parse, answer_id))
-  lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams) = 25;
+  lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, uint64 nonce) = 25;
 
   __attribute__((internal, noaccept, answer_id))
   cell getWalletCode_response() = 26;
   
   __attribute__((external, noaccept, dyn_chain_parse))
-  lazy<MsgAddressInt> deployWallet_user(int8 workchain_id, uint256 pubkey, WalletGramsType grams) = 27;
+  lazy<MsgAddressInt> deployWallet_user(int8 workchain_id, uint256 pubkey, WalletGramsType grams, uint64 nonce) = 27;
   
 
 };
