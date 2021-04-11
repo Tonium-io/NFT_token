@@ -37,7 +37,8 @@
     "inputs": [
     { "name":"pubkey", "type":"uint256" },
     { "name":"tokenId", "type":"uint128" },
-    { "name":"grams", "type":"uint128" }
+    { "name":"grams", "type":"uint128" },
+    { "name":"nonce", "type":"uint64" }
     ],
     "outputs": [
     ],

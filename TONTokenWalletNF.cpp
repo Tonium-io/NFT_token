@@ -59,11 +59,11 @@ public:
   }
   
   __always_inline
-  void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams) {
+  void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams, uint64 nonce) {
     require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
     tvm_accept();
     tvm_commit();
-    lazy<MsgAddressInt> adr = address::make_std(int8(0),expected_sender_address(pubkey, uint_t<64>{0}));
+    lazy<MsgAddressInt> adr = address::make_std(int8(0),expected_sender_address(pubkey, nonce));
     transfer(adr, tokenId, grams);
   }
 
