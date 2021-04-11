@@ -5,6 +5,7 @@
 #include <iterator>
 #include <tvm/default_support_functions.hpp>
 
+
 using namespace tvm;
 using namespace schema;
 
@@ -55,6 +56,15 @@ public:
      // call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
 
     tokens_.erase(tokenId);
+  }
+  
+  __always_inline
+  void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams) {
+    require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
+    tvm_accept();
+    tvm_commit();
+    lazy<MsgAddressInt> adr = address::make_std(int8(0),expected_sender_address(pubkey, uint_t<64>{0}));
+    transfer(adr, tokenId, grams);
   }
 
   __always_inline

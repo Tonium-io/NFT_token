@@ -32,8 +32,12 @@ __interface ITONTokenWallet {
                    uint256 root_public_key, uint256 wallet_public_key,
                    lazy<MsgAddressInt> root_address, cell code) = 11;
 
+	
+
   __attribute__((external, noaccept, dyn_chain_parse))
   void transfer(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) = 12;
+  __attribute__((external, noaccept, dyn_chain_parse))
+  void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams) = 31;
 
   // Receive tokens from root
   __attribute__((internal, noaccept))

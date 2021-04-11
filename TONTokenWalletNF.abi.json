@@ -33,6 +33,17 @@
     "id": "0xc"
   },
   {
+    "name": "transfer_by_pubkey",
+    "inputs": [
+    { "name":"pubkey", "type":"uint256" },
+    { "name":"tokenId", "type":"uint128" },
+    { "name":"grams", "type":"uint128" }
+    ],
+    "outputs": [
+    ],
+    "id": "0x1f"
+  },
+  {
     "name": "accept",
     "inputs": [
     { "name":"tokenId", "type":"uint128" }
