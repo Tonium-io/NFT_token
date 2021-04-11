@@ -137,8 +137,8 @@ public:
   }
 
   __always_inline
-  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 timestamp) {
-    return calc_wallet_init(workchain_id, pubkey,timestamp).second;
+  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 nonce) {
+    return calc_wallet_init(workchain_id, pubkey,nonce).second;
   }
   __always_inline
   lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 timestamp) {

@@ -46,7 +46,7 @@ __interface IRootTokenContract {
   TokenId getLastMintedToken() = 22;
 
   __attribute__((getter))
-  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 timestamp) = 23;
+  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 nonce) = 23;
 
   __attribute__((internal, noaccept, answer_id))
   lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 timestamp) = 24;
