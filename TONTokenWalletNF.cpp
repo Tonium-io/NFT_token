@@ -41,14 +41,14 @@ public:
 
   __always_inline
   void transfer(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) {
-    //require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
+    require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
 
     // Transfer to zero address is not allowed.
-    //require(std::get<addr_std>(dest()).address != 0, error_code::zero_dest_addr);
+    require(std::get<addr_std>(dest()).address != 0, error_code::zero_dest_addr);
 
     tvm_accept();
     tvm_commit();
-    //require(tokens_.contains(tokenId), error_code::not_enough_balance);
+    require(tokens_.contains(tokenId), error_code::not_enough_balance);
 
     contract_handle<ITONTokenWallet> dest_wallet(dest);
     dest_wallet(Grams(grams.get())).internalTransfer(tokenId, wallet_public_key_,timestamp_);
@@ -74,15 +74,15 @@ public:
   __always_inline
   void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 timestamp) {
     //require(root_public_key_ == tvm_pubkey(),error_code::message_sender_is_not_good_wallet);
-    //uint256 expected_address = expected_sender_address(pubkey, timestamp);
-    //auto sender = int_sender();
+    uint256 expected_address = expected_sender_address(pubkey, timestamp);
+    auto sender = int_sender();
 
-    //require(std::get<addr_std>(sender()).address == expected_address,
-    //       error_code::message_sender_is_not_good_wallet);
-    //require(tokenId > 0, error_code::zero_token_id);
+    require(std::get<addr_std>(sender()).address == expected_address,
+           error_code::message_sender_is_not_good_wallet);
+    require(tokenId > 0, error_code::zero_token_id);
     tvm_accept();
     tvm_commit();
-    //require(!tokens_.contains(tokenId), error_code::already_have_this_token);
+    require(!tokens_.contains(tokenId), error_code::already_have_this_token);
 
     tokens_.insert(uint_t<128>{1});
   }
