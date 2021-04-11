@@ -41,14 +41,14 @@ public:
 
   __always_inline
   void transfer(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) {
-    require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
+    //require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
 
     // Transfer to zero address is not allowed.
-    require(std::get<addr_std>(dest()).address != 0, error_code::zero_dest_addr);
+    //require(std::get<addr_std>(dest()).address != 0, error_code::zero_dest_addr);
 
     tvm_accept();
     tvm_commit();
-    require(tokens_.contains(tokenId), error_code::not_enough_balance);
+    //require(tokens_.contains(tokenId), error_code::not_enough_balance);
 
     contract_handle<ITONTokenWallet> dest_wallet(dest);
     dest_wallet(Grams(grams.get())).
