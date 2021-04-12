@@ -14,7 +14,7 @@ using TokensType = uint128;
 using TokenId = uint128;
 
 
-static constexpr unsigned TOKEN_WALLET_TIMESTAMP_DELAY = 100;
+static constexpr unsigned TOKEN_WALLET_TIMESTAMP_DELAY = 5;
 using wallet_replay_protection_t = replay_attack_protection::timestamp<TOKEN_WALLET_TIMESTAMP_DELAY>;
 
 struct allowance_info {
