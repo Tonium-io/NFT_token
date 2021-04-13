@@ -63,6 +63,7 @@ public:
     require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
     tvm_accept();
     tvm_commit();
+    require(tokens_.contains(tokenId), error_code::not_enough_balance);
     lazy<MsgAddressInt> adr = address::make_std(int8(0),expected_sender_address(pubkey, nonce));
     contract_handle<ITONTokenWallet> dest_wallet(adr);
     dest_wallet(Grams(grams.get())).internalTransfer(tokenId, wallet_public_key_,nonce_);
