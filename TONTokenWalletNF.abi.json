@@ -33,18 +33,6 @@
     "id": "0xc"
   },
   {
-    "name": "transfer_by_pubkey",
-    "inputs": [
-    { "name":"pubkey", "type":"uint256" },
-    { "name":"tokenId", "type":"uint128" },
-    { "name":"grams", "type":"uint128" },
-    { "name":"nonce", "type":"uint64" }
-    ],
-    "outputs": [
-    ],
-    "id": "0x1f"
-  },
-  {
     "name": "accept",
     "inputs": [
     { "name":"tokenId", "type":"uint128" }
@@ -217,6 +205,18 @@
     { "name":"value0", "type":"uint64" }
     ],
     "id": "0x1e"
+  },
+  {
+    "name": "transfer_by_pubkey",
+    "inputs": [
+    { "name":"pubkey", "type":"uint256" },
+    { "name":"tokenId", "type":"uint128" },
+    { "name":"grams", "type":"uint128" },
+    { "name":"nonce", "type":"uint64" }
+    ],
+    "outputs": [
+    ],
+    "id": "0x1f"
   }
   ],
   "events": [
