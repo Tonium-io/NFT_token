@@ -64,7 +64,11 @@ public:
     tvm_accept();
     tvm_commit();
     lazy<MsgAddressInt> adr = address::make_std(int8(0),expected_sender_address(pubkey, nonce));
-    transfer(adr, tokenId, grams);
+    contract_handle<ITONTokenWallet> dest_wallet(adr);
+    dest_wallet(Grams(grams.get())).internalTransfer(tokenId, wallet_public_key_,nonce_);
+     // call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
+
+    tokens_.erase(tokenId);
   }
 
   __always_inline
