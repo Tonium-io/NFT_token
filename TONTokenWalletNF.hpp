@@ -93,7 +93,7 @@ __interface ITONTokenWallet {
   __attribute__((getter))
   uint64 getNonce() = 30;
   
-   __attribute__((external, noaccept, dyn_chain_parse))
+   __attribute__((internal, noaccept, dyn_chain_parse))
   void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams, uint64 nonce) = 31;
 };
 
