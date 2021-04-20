@@ -36,7 +36,7 @@ public:
   }
 
   __always_inline
-  lazy<MsgAddressInt> deployWallet(int8 workchain_id, uint256 pubkey, TokenId tokenId, WalletGramsType grams, uint64 nonce) {
+  lazy<MsgAddressInt> deployWallet(int8 workchain_id, uint256 pubkey, TokenId tokenId, WalletGramsType grams, lazy<MsgAddressInt> nonce) {
     require(root_public_key_ == tvm_pubkey(), error_code::message_sender_is_not_my_owner);
     require(!tokenId || tokens_.contains(tokenId), error_code::token_not_minted);
 
@@ -53,7 +53,7 @@ public:
   }
   
   __always_inline
-  lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, uint64 nonce) {
+  lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, lazy<MsgAddressInt> nonce) {
     auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get())).
@@ -61,16 +61,6 @@ public:
     set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
     return dest;
   }
-  
-  __always_inline
-  lazy<MsgAddressInt> deployWallet_user(int8 workchain_id, uint256 pubkey, WalletGramsType grams, uint64 nonce) {
-    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
-    contract_handle<ITONTokenWallet> dest_handle(dest);
-    dest_handle.deploy(wallet_init, Grams(grams.get())).
-      call<&ITONTokenWallet::accept>(TokenId(0));
-    return dest;
-  }
-  
 
   __always_inline
   void grant(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) {
@@ -126,27 +116,14 @@ public:
     return wallet_code_;
   }
 
-  __always_inline cell getWalletCode_response() {
-    set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
-    return wallet_code_;
-  }
-
-
   __always_inline TokenId getLastMintedToken() {
     return total_supply_;
   }
 
   __always_inline
-  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, uint64 nonce) {
+  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) {
     return calc_wallet_init(workchain_id, pubkey,nonce).second;
   }
-  __always_inline
-  lazy<MsgAddressInt> getWalletAddress_response(int8 workchain_id, uint256 pubkey, uint64 nonce) {
-    set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
-    return calc_wallet_init(workchain_id, pubkey, nonce).second;
-  }
-
-
 
   // received bounced message back
   __always_inline static int _on_bounced(cell msg, slice msg_body) {
@@ -179,7 +156,7 @@ public:
   DEFAULT_SUPPORT_FUNCTIONS(IRootTokenContract, root_replay_protection_t)
 private:
   __always_inline
-  std::pair<StateInit, lazy<MsgAddressInt>> calc_wallet_init(int8 workchain_id, uint256 pubkey, uint64 nonce) {
+  std::pair<StateInit, lazy<MsgAddressInt>> calc_wallet_init(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) {
     DTONTokenWallet wallet_data {
       name_, symbol_, decimals_,
       root_public_key_, pubkey,

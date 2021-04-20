@@ -42,7 +42,7 @@ public:
 
   __always_inline
   void transfer(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) {
-    require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
+    require(tvm_pubkey() == wallet_public_key_ || nonce_ == lazy<MsgAddressInt>{int_sender()}, error_code::message_sender_is_not_my_owner);
 
     // Transfer to zero address is not allowed.
     require(std::get<addr_std>(dest()).address != 0, error_code::zero_dest_addr);
@@ -53,24 +53,23 @@ public:
 
     contract_handle<ITONTokenWallet> dest_wallet(dest);
     dest_wallet(Grams(grams.get())).internalTransfer(tokenId, wallet_public_key_,nonce_);
-     // call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
-
     tokens_.erase(tokenId);
   }
   
   __always_inline
-  void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams, uint64 nonce) {
-    require(tvm_pubkey() == wallet_public_key_, error_code::message_sender_is_not_my_owner);
+  void send_all_token_by_pubkey(uint256 pubkey, lazy<MsgAddressInt> nonce) {
+      require(tvm_pubkey() == wallet_public_key_ || nonce_ == lazy<MsgAddressInt>{int_sender()}, error_code::message_sender_is_not_my_owner);
     tvm_accept();
     tvm_commit();
-    require(tokens_.contains(tokenId), error_code::not_enough_balance);
     lazy<MsgAddressInt> adr = address::make_std(int8(0),expected_sender_address(pubkey, nonce));
     contract_handle<ITONTokenWallet> dest_wallet(adr);
-    dest_wallet(Grams(grams.get())).internalTransfer(tokenId, wallet_public_key_,nonce_);
-     // call<&ITONTokenWallet::internalTransfer>(tokenId, wallet_public_key_,timestamp_);
-
-    tokens_.erase(tokenId);
-  }
+    auto iterator = tokens_.begin();
+    for (uint128 index = uint128(0); index < tokens_.size(); index++) {
+    	auto tokenId = *std::next(iterator, index.get());
+    	dest_wallet(Grams(0)).internalTransfer(tokenId, wallet_public_key_,nonce_);
+    	    tokens_.erase(tokenId);
+    	}
+    }
 
   __always_inline
   void accept(TokenId tokenId) {
@@ -87,8 +86,7 @@ public:
   }
 
   __always_inline
-  void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 nonce) {
-    //require(root_public_key_ == tvm_pubkey(),error_code::message_sender_is_not_good_wallet);
+  void internalTransfer(TokenId tokenId, uint256 pubkey, lazy<MsgAddressInt> nonce) {
     uint256 expected_address = expected_sender_address(pubkey, nonce);
     auto sender = int_sender();
 
@@ -115,10 +113,6 @@ public:
   __always_inline TokensType getBalance() {
     return TokensType(tokens_.size().get());
   }
-  __always_inline TokensType getBalance_response() {
-    set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
-    return TokensType(tokens_.size().get());
-  }
   __always_inline uint256 getWalletKey() {
     return wallet_public_key_;
   }
@@ -134,18 +128,12 @@ public:
     return *std::next(tokens_.begin(), index.get());
   }
 
-  __always_inline TokenId getTokenByIndex_response(TokensType index) {
-    require(index < tokens_.size(), error_code::iterator_overflow);
-    set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
-    return *std::next(tokens_.begin(), index.get());
-  }
-
   __always_inline lazy<MsgAddressInt> getApproved(TokenId tokenId) {
     return (allowance_ && allowance_->allowedToken == tokenId) ? allowance_->spender :
       lazy<MsgAddressInt>{addr_std{ {}, {}, int8(0), uint256(0) }};
   }
   
-  __always_inline uint64 getNonce() {
+  __always_inline lazy<MsgAddressInt> getNonce() {
     return nonce_;
   }
 
@@ -231,7 +219,7 @@ public:
   // =============== Support functions ==================
   DEFAULT_SUPPORT_FUNCTIONS(ITONTokenWallet, wallet_replay_protection_t)
 private:
-  __always_inline uint256 expected_sender_address(uint256 sender_public_key, uint64 nonce) {
+  __always_inline uint256 expected_sender_address(uint256 sender_public_key, lazy<MsgAddressInt> nonce) {
     DTONTokenWallet wallet_data {
       name_, symbol_, decimals_,
       root_public_key_, sender_public_key,

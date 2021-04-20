@@ -32,69 +32,65 @@ __interface ITONTokenWallet {
                    uint256 root_public_key, uint256 wallet_public_key,
                    lazy<MsgAddressInt> root_address, cell code) = 11;
 
-	
 
-  __attribute__((external, noaccept, dyn_chain_parse))
+  __attribute__((external,internal, noaccept, dyn_chain_parse))
   void transfer(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) = 12;
+  
+       __attribute__ ((external,internal noaccept, dyn_chain_parse))
+  void send_all_token_by_pubkey(uint256 pubkey, lazy<MsgAddressInt> nonce) = 13;
 
 
   // Receive tokens from root
   __attribute__((internal, noaccept))
-  void accept(TokenId tokenId) = 13;
+  void accept(TokenId tokenId) = 14;
 
   // Receive tokens from other wallet
   __attribute__((internal,noaccept))
-  void internalTransfer(TokenId tokenId, uint256 pubkey, uint64 timestamp) = 14;
+  void internalTransfer(TokenId tokenId, uint256 pubkey, lazy<MsgAddressInt> timestamp) = 15;
 
   // getters
   __attribute__((getter))
-  bytes getName() = 15;
+  bytes getName() = 16;
 
   __attribute__((getter))
-  bytes getSymbol() = 16;
+  bytes getSymbol() = 17;
 
   __attribute__((getter))
-  uint8 getDecimals() = 17;
+  uint8 getDecimals() = 18;
 
   __attribute__((getter))
-  TokensType getBalance() = 18;
+  TokensType getBalance() = 19;
 
   __attribute__((getter))
-  uint256 getWalletKey() = 19;
+  uint256 getWalletKey() = 20;
 
   __attribute__((getter))
-  lazy<MsgAddressInt> getRootAddress() = 20;
+  lazy<MsgAddressInt> getRootAddress() = 21;
 
   __attribute__((getter))
-  allowance_info allowance() = 21;
+  allowance_info allowance() = 22;
 
   __attribute__((getter))
-  TokenId getTokenByIndex(TokensType index) = 22;
+  TokenId getTokenByIndex(TokensType index) = 23;
 
   __attribute__((getter))
-  lazy<MsgAddressInt> getApproved(TokenId tokenId) = 23;
+  lazy<MsgAddressInt> getApproved(TokenId tokenId) = 24;
+  
+    __attribute__((getter))
+  lazy<MsgAddressInt> getNonce() = 25;
 
   // allowance interface
   __attribute__((external, noaccept, dyn_chain_parse))
-  void approve(lazy<MsgAddressInt> spender, TokenId tokenId) = 24;
+  void approve(lazy<MsgAddressInt> spender, TokenId tokenId) = 26;
 
   __attribute__((external, noaccept, dyn_chain_parse))
-  void transferFrom(lazy<MsgAddressInt> dest, lazy<MsgAddressInt> to, TokenId tokenId, WalletGramsType grams) = 25;
+  void transferFrom(lazy<MsgAddressInt> dest, lazy<MsgAddressInt> to, TokenId tokenId, WalletGramsType grams) = 27;
 
   __attribute__((internal))
-  void internalTransferFrom(lazy<MsgAddressInt> to, TokenId tokenId) = 26;
+  void internalTransferFrom(lazy<MsgAddressInt> to, TokenId tokenId) = 28;
 
   __attribute__((external, noaccept))
-  void disapprove() = 27;
-  __attribute__((internal, noaccept,answer_id))
-  TokensType getBalance_response() = 28;
-  __attribute__((internal, noaccept,answer_id))
-  TokenId getTokenByIndex_response(TokensType index) = 29;
-  __attribute__((getter))
-  uint64 getNonce() = 30;
-  
-   __attribute__((internal, noaccept, dyn_chain_parse))
-  void transfer_by_pubkey(uint256 pubkey, TokenId tokenId, WalletGramsType grams, uint64 nonce) = 31;
+  void disapprove() = 29;
 };
 
 struct DTONTokenWallet {
@@ -105,7 +101,7 @@ struct DTONTokenWallet {
   uint256 wallet_public_key_;
   lazy<MsgAddressInt> root_address_;
   cell code_;
-  uint64 nonce_;
+  lazy<MsgAddressInt> nonce_;
   std::optional<allowance_info> allowance_;
   dict_set<TokenId> tokens_;
   
