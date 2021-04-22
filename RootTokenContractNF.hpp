@@ -9,7 +9,7 @@ __interface IRootTokenContract {
 
   // expected offchain constructor execution
   __attribute__((internal, external, dyn_chain_parse))
-  void constructor(bytes name, bytes symbol, uint8 decimals,
+  void constructor(bytes name, bytes symbol,bytes tokenURI, uint8 decimals,
     uint256 root_public_key, cell wallet_code) = 11;
 
   __attribute__((external, noaccept, dyn_chain_parse))
@@ -29,32 +29,36 @@ __interface IRootTokenContract {
 
   __attribute__((getter))
   bytes getSymbol() = 17;
+  
+  __attribute__((getter))
+  bytes getTokenURI() = 18;
 
   __attribute__((getter))
-  uint8 getDecimals() = 18;
+  uint8 getDecimals() = 19;
 
   __attribute__((getter))
-  uint256 getRootKey() = 19;
+  uint256 getRootKey() = 20;
 
   __attribute__((getter))
-  TokensType getTotalSupply() = 20;
+  TokensType getTotalSupply() = 21;
 
   __attribute__((getter))
-  TokensType getTotalGranted() = 21;
+  TokensType getTotalGranted() = 22;
 
   __attribute__((getter))
-  cell getWalletCode() = 22;
+  cell getWalletCode() = 23;
 
   __attribute__((getter))
-  TokenId getLastMintedToken() = 23;
+  TokenId getLastMintedToken() = 24;
 
   __attribute__((getter))
-  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) = 24;
+  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) = 25;
 };
 
 struct DRootTokenContract {
   bytes name_;
   bytes symbol_;
+  bytes tokenURI_;
   uint8 decimals_;
   uint256 root_public_key_;
   TokensType total_supply_;

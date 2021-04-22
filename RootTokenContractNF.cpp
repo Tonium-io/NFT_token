@@ -25,9 +25,10 @@ public:
   };
 
   __always_inline
-  void constructor(bytes name, bytes symbol, uint8 decimals, uint256 root_public_key, cell wallet_code) {
+  void constructor(bytes name, bytes symbol,bytes tokenURI, uint8 decimals, uint256 root_public_key, cell wallet_code) {
     name_ = name;
     symbol_ = symbol;
+    tokenURI_ = tokenURI;
     decimals_ = decimals;
     root_public_key_ = root_public_key;
     wallet_code_ = wallet_code;
@@ -94,6 +95,9 @@ public:
 
   __always_inline bytes getSymbol() {
     return symbol_;
+  }
+  __always_inline bytes getTokenURI() {
+    return tokenURI_;
   }
 
   __always_inline uint8 getDecimals() {
