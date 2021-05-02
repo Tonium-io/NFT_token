@@ -125,9 +125,9 @@ public:
   }
 
   __always_inline
-  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, MsgAddressInt nonce) {
-    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,lazy<MsgAddressInt>{nonce});
-    return dest;
+  lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) {
+    //auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
+    return nonce;
   }
 
   // received bounced message back
