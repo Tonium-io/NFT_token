@@ -126,7 +126,8 @@ public:
 
   __always_inline
   lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) {
-    return calc_wallet_init(workchain_id, pubkey,nonce).second;
+    auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
+    return dest;
   }
 
   // received bounced message back
@@ -151,10 +152,10 @@ public:
     save_persistent_data<IRootTokenContract, root_replay_protection_t>(hdr, persist);
     return 0;
   }
-  // default processing of unknown messages
-  //__always_inline static int _fallback(cell msg, slice msg_body) {
-  //  return 0;
-  //}
+  //default processing of unknown messages
+  __always_inline static int _fallback(cell msg, slice msg_body) {
+    return 0;
+  }
 
   // =============== Support functions ==================
   DEFAULT_SUPPORT_FUNCTIONS(IRootTokenContract, root_replay_protection_t)
