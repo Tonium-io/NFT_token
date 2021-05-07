@@ -62,7 +62,10 @@
   {
     "name": "mint",
     "inputs": [
-    { "name":"tokenId", "type":"uint128" }
+    { "name":"tokenId", "type":"uint128" },
+    { "name":"name", "type":"bytes" },
+    { "name":"type", "type":"uint8" },
+    { "name":"data", "type":"bytes" }
     ],
     "outputs": [
     { "name":"value0", "type":"uint128" }
@@ -161,6 +164,41 @@
     { "name":"value0", "type":"address" }
     ],
     "id": "0x19"
+  },
+  {
+    "name": "getFile",
+    "inputs": [
+    { "name":"tokenId", "type":"uint128" },
+    { "name":"index", "type":"uint32" }
+    ],
+    "outputs": [
+    { "name":"value0", "type":"bytes" }
+    ],
+    "id": "0x1a"
+  },
+  {
+    "name": "addBytes",
+    "inputs": [
+    { "name":"tokenId", "type":"uint128" },
+    { "name":"data", "type":"bytes" }
+    ],
+    "outputs": [
+    ],
+    "id": "0x1b"
+  },
+  {
+    "name": "getInfoToken",
+    "inputs": [
+    { "name":"tokenId", "type":"uint128" }
+    ],
+    "outputs": [
+    { "name":"name", "type":"bytes" },
+    { "name":"type", "type":"uint8" },
+    { "name":"tokenUri", "type":"bytes" },
+    { "name":"time", "type":"uint64" },
+    { "name":"sizeFile", "type":"uint32" }
+    ],
+    "id": "0x1c"
   }
   ],
   "events": [
