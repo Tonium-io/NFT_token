@@ -9,8 +9,7 @@ __interface IRootTokenContract {
 
   // expected offchain constructor execution
   __attribute__((internal, external, dyn_chain_parse))
-  void constructor(bytes name, bytes symbol,bytes tokenURI, uint8 decimals,
-    uint256 root_public_key, cell wallet_code) = 11;
+  void constructor() = 11;
 
   __attribute__((external, noaccept, dyn_chain_parse))
   lazy<MsgAddressInt> deployWallet(int8 workchain_id, uint256 pubkey, TokenId tokenId, WalletGramsType grams, lazy<MsgAddressInt> nonce) = 12;

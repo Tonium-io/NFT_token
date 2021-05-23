@@ -9,12 +9,6 @@
   {
     "name": "constructor",
     "inputs": [
-    { "name":"name", "type":"bytes" },
-    { "name":"symbol", "type":"bytes" },
-    { "name":"tokenURI", "type":"bytes" },
-    { "name":"decimals", "type":"uint8" },
-    { "name":"root_public_key", "type":"uint256" },
-    { "name":"wallet_code", "type":"cell" }
     ],
     "outputs": [
     ],

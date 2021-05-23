@@ -29,13 +29,13 @@ public:
   };
   
   __always_inline
-  void constructor(bytes name, bytes symbol,bytes tokenURI, uint8 decimals, uint256 root_public_key, cell wallet_code) {
-    name_ = name;
-    symbol_ = symbol;
-    tokenURI_ = tokenURI;
-    decimals_ = decimals;
-    root_public_key_ = root_public_key;
-    wallet_code_ = wallet_code;
+  void constructor() {
+    // name_ = name;
+    // symbol_ = symbol;
+    // tokenURI_ = tokenURI;
+    // decimals_ = decimals;
+    // root_public_key_ = root_public_key;
+    // wallet_code_ = wallet_code;
     total_supply_ = TokensType(0);
     total_granted_ = TokensType(0);
     
@@ -66,8 +66,7 @@ public:
   lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, lazy<MsgAddressInt> nonce) {
     auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
     contract_handle<ITONTokenWallet> dest_handle(dest);
-    dest_handle.deploy(wallet_init, Grams(grams.get())).
-      call<&ITONTokenWallet::accept>(TokenId(0));
+    dest_handle.deploy(wallet_init, Grams(grams.get()));
     set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
     return dest;
   }
