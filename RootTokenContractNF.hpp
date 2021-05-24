@@ -22,7 +22,7 @@ __interface IRootTokenContract {
   void grant(lazy<MsgAddressInt> dest, TokenId tokenId, WalletGramsType grams) = 14;
 
   __attribute__((external, noaccept, dyn_chain_parse))
-  TokenId mint(TokenId tokenId) = 15;
+  TokenId mint(TokenId tokenId,  bytes name, uint8 type, bytes data) = 15;
 
   __attribute__((getter))
   bytes getName() = 16;
@@ -51,8 +51,19 @@ __interface IRootTokenContract {
   __attribute__((getter))
   TokenId getLastMintedToken() = 24;
 
+
+
   __attribute__((getter))
   lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) = 25;
+
+    __attribute__((getter))
+  bytes getFile(TokenId tokenId,uint32 index) = 26;
+
+   __attribute__((external, noaccept, dyn_chain_parse))
+  void addBytes(TokenId tokenId, bytes data) = 27;
+
+    __attribute__((getter))
+  info_token getInfoToken(TokenId tokenId) = 28;
 };
 
 struct DRootTokenContract {
@@ -65,7 +76,13 @@ struct DRootTokenContract {
   TokensType total_granted_;
   cell wallet_code_;
   dict_set<TokenId> tokens_;
+  dict_map<uint128,t_file> files_;
+  
+  // t_file files_;
+  //dict_array<File> files_;
 };
+
+
 
 struct ERootTokenContract {
 };

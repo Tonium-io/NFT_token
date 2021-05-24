@@ -13,6 +13,21 @@ using WalletGramsType = uint128;
 using TokensType = uint128;
 using TokenId = uint128;
 
+struct t_file {
+  bytes name;
+  uint8 type;
+  dict_array<bytes,128> data;
+  uint64 time;
+};
+
+struct info_token {
+  bytes name;
+  uint8 type;
+  bytes tokenUri;
+  uint64 time;
+  uint32 sizeFile;
+};
+
 
 static constexpr unsigned TOKEN_WALLET_TIMESTAMP_DELAY = 5;
 using wallet_replay_protection_t = replay_attack_protection::timestamp<TOKEN_WALLET_TIMESTAMP_DELAY>;

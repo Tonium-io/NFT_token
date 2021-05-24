@@ -10,12 +10,16 @@
 using namespace tvm;
 using namespace schema;
 
+
 static constexpr unsigned ROOT_TIMESTAMP_DELAY = 100;
+
+
+
 
 class RootTokenContract final : public smart_interface<IRootTokenContract>, public DRootTokenContract {
 public:
-  using root_replay_protection_t = replay_attack_protection::timestamp<ROOT_TIMESTAMP_DELAY>;
 
+  using root_replay_protection_t = replay_attack_protection::timestamp<ROOT_TIMESTAMP_DELAY>;
   struct error_code : tvm::error_code {
     static constexpr unsigned message_sender_is_not_my_owner = 100;
     static constexpr unsigned token_not_minted               = 101;
@@ -23,7 +27,7 @@ public:
     static constexpr unsigned wrong_bounced_args             = 103;
     static constexpr unsigned wrong_mint_token_id            = 104;
   };
-
+  
   __always_inline
   void constructor(bytes name, bytes symbol,bytes tokenURI, uint8 decimals, uint256 root_public_key, cell wallet_code) {
     name_ = name;
@@ -34,6 +38,11 @@ public:
     wallet_code_ = wallet_code;
     total_supply_ = TokensType(0);
     total_granted_ = TokensType(0);
+    
+    // struct t_file p1 = {name,uint_t<8>{0},name}; 
+    // files_ = p1; 
+    
+    
   }
 
   __always_inline
@@ -77,15 +86,38 @@ public:
   }
 
   __always_inline
-  TokenId mint(TokenId tokenId) {
+  TokenId mint(TokenId tokenId, bytes name, uint8 type, bytes data) {
     require(root_public_key_ == tvm_pubkey(), error_code::message_sender_is_not_my_owner);
     require(tokenId == total_supply_ + 1, error_code::wrong_mint_token_id);
 
     tvm_accept();
-
+    //struct t_file file = {name, type,data};
+    t_file file;
+    file.name = name;
+    file.type = type;
+    file.data.push_back(data);
+    file.time = uint_t<64>{smart_contract_info::now()};
+    files_.set_at(total_supply_.get(),file);
+    //files_[a] = p1; __always_inline t_file getFile(TokenId tokenId) {
+    //return files_;
+    // files_[0].name = name;
+    // files_[0].type = type;
+    // files_[0].data = data;
+    //files_[0] = file;
+    //files_.push_back(file);
+    //files_[total_supply_] = file;
     tokens_.insert(tokenId);
     ++total_supply_;
     return tokenId;
+  }
+
+  __always_inline 
+  void addBytes(TokenId tokenId, bytes data) {
+    require(root_public_key_ == tvm_pubkey(), error_code::message_sender_is_not_my_owner);
+    tvm_accept();
+    t_file obj = files_.get_at(tokenId.get() - 1);
+    obj.data.push_back(data);
+    files_.set_at(tokenId.get() - 1,obj);
   }
 
   // getters
@@ -122,6 +154,19 @@ public:
 
   __always_inline TokenId getLastMintedToken() {
     return total_supply_;
+  }
+
+  __always_inline info_token getInfoToken(TokenId tokenId) {
+    //return files_;
+    t_file token = files_.get_at(tokenId.get() - 1);
+    struct info_token response = {token.name,token.type,tokenURI_,token.time,token.data.size()};
+    return response;
+  }
+  
+
+  __always_inline bytes getFile(TokenId tokenId,uint32 index) {
+    //return files_;
+    return files_.get_at(tokenId.get() - 1).data.get_at(index.get());
   }
 
   __always_inline
