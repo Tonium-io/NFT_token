@@ -26,7 +26,7 @@ public:
     static constexpr unsigned zero_dest_addr                    = 111;
   };
   
-
+  
   __always_inline
   void constructor(bytes name, bytes symbol, uint8 decimals,
                    uint256 root_public_key, uint256 wallet_public_key,
