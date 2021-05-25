@@ -65,7 +65,8 @@ public:
   
   __always_inline
   lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, lazy<MsgAddressInt> nonce) {
-    require(int_msg().unpack().value() >= 500000000, error_code::not_enough_balance);
+    auto b = int_msg().unpack().value();
+    require(b >= 500000000, error_code::not_enough_balance);
     auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get()));

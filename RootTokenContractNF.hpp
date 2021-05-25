@@ -50,6 +50,8 @@ __interface IRootTokenContract {
   __attribute__((getter))
   TokenId getLastMintedToken() = 24;
 
+
+
   __attribute__((getter))
   lazy<MsgAddressInt> getWalletAddress(int8 workchain_id, uint256 pubkey, lazy<MsgAddressInt> nonce) = 25;
 
