@@ -26,16 +26,17 @@ public:
     static constexpr unsigned wrong_bounced_header           = 102;
     static constexpr unsigned wrong_bounced_args             = 103;
     static constexpr unsigned wrong_mint_token_id            = 104;
+    static constexpr unsigned not_enough_balance             = 105;
   };
   
   __always_inline
-  void constructor() {
-    // name_ = name;
-    // symbol_ = symbol;
-    // tokenURI_ = tokenURI;
-    // decimals_ = decimals;
-    // root_public_key_ = root_public_key;
-    // wallet_code_ = wallet_code;
+  void constructor(bytes name, bytes symbol, bytes tokenURI, uint8 decimals, uint256 root_public_key, cell wallet_code) {
+    name_ = name;
+    symbol_ = symbol;
+    tokenURI_ = tokenURI;
+    decimals_ = decimals;
+    root_public_key_ = root_public_key;
+    wallet_code_ = wallet_code;
     total_supply_ = TokensType(0);
     total_granted_ = TokensType(0);
     
@@ -64,10 +65,12 @@ public:
   
   __always_inline
   lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, lazy<MsgAddressInt> nonce) {
+    require(int_msg().unpack().value() >= 500000000, error_code::not_enough_balance);
     auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
     contract_handle<ITONTokenWallet> dest_handle(dest);
     dest_handle.deploy(wallet_init, Grams(grams.get()));
-    set_int_return_flag(SEND_REST_GAS_FROM_INCOMING);
+    set_int_return_flag(0);
+    set_int_return_value(100000000);
     return dest;
   }
 
