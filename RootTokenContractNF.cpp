@@ -30,10 +30,9 @@ public:
   };
   
   __always_inline
-  void constructor(bytes name, bytes symbol, bytes tokenURI, uint8 decimals, uint256 root_public_key, cell wallet_code) {
+  void constructor(bytes name, bytes symbol, uint8 decimals, uint256 root_public_key, cell wallet_code) {
     name_ = name;
     symbol_ = symbol;
-    tokenURI_ = tokenURI;
     decimals_ = decimals;
     root_public_key_ = root_public_key;
     wallet_code_ = wallet_code;
@@ -66,7 +65,7 @@ public:
   __always_inline
   lazy<MsgAddressInt> deployWallet_response(int8 workchain_id, uint256 pubkey, WalletGramsType grams, lazy<MsgAddressInt> nonce) {
     auto value = int_value();
-    require(value() >= 1000000000 + grams.get(), error_code::not_enough_balance);
+    require(value() >= 500000000 + grams.get(), error_code::not_enough_balance);
     tvm_accept();
     auto [wallet_init, dest] = calc_wallet_init(workchain_id, pubkey,nonce);
     contract_handle<ITONTokenWallet> dest_handle(dest);
@@ -91,38 +90,20 @@ public:
   }
 
   __always_inline
-  TokenId mint(TokenId tokenId, bytes name, uint8 type, bytes data) {
+  TokenId mint(TokenId tokenId, bytes name, bytes jsonMeta,lazy<MsgAddressInt> data) {
     require(root_public_key_ == tvm_pubkey(), error_code::message_sender_is_not_my_owner);
     require(tokenId == total_supply_ + 1, error_code::wrong_mint_token_id);
 
     tvm_accept();
-    //struct t_file file = {name, type,data};
     t_file file;
     file.name = name;
-    file.type = type;
-    file.data.push_back(data);
     file.time = uint_t<64>{smart_contract_info::now()};
+    file.data = data;
+    file.jsonMeta = jsonMeta;
     files_.set_at(total_supply_.get(),file);
-    //files_[a] = p1; __always_inline t_file getFile(TokenId tokenId) {
-    //return files_;
-    // files_[0].name = name;
-    // files_[0].type = type;
-    // files_[0].data = data;
-    //files_[0] = file;
-    //files_.push_back(file);
-    //files_[total_supply_] = file;
     tokens_.insert(tokenId);
     ++total_supply_;
     return tokenId;
-  }
-
-  __always_inline 
-  void addBytes(TokenId tokenId, bytes data) {
-    require(root_public_key_ == tvm_pubkey(), error_code::message_sender_is_not_my_owner);
-    tvm_accept();
-    t_file obj = files_.get_at(tokenId.get() - 1);
-    obj.data.push_back(data);
-    files_.set_at(tokenId.get() - 1,obj);
   }
 
   // getters
@@ -132,9 +113,6 @@ public:
 
   __always_inline bytes getSymbol() {
     return symbol_;
-  }
-  __always_inline bytes getTokenURI() {
-    return tokenURI_;
   }
 
   __always_inline uint8 getDecimals() {
@@ -161,17 +139,14 @@ public:
     return total_supply_;
   }
 
-  __always_inline info_token getInfoToken(TokenId tokenId) {
-    //return files_;
-    t_file token = files_.get_at(tokenId.get() - 1);
-    struct info_token response = {token.name,token.type,tokenURI_,token.time,token.data.size()};
-    return response;
+  __always_inline t_file getInfoToken(TokenId tokenId) {
+    return files_.get_at(tokenId.get() - 1);
   }
   
 
-  __always_inline bytes getFile(TokenId tokenId,uint32 index) {
+  __always_inline bytes getJson(TokenId tokenId) {
     //return files_;
-    return files_.get_at(tokenId.get() - 1).data.get_at(index.get());
+    return files_.get_at(tokenId.get() - 1).jsonMeta;
   }
 
   __always_inline
