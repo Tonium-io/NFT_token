@@ -1,7 +1,6 @@
 from tonos_ts4 import ts4
 import unittest
 import gzip
-from PIL import Image
 import binascii
 eq = ts4.eq
 
