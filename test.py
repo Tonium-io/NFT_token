@@ -14,15 +14,11 @@ class TestPair(unittest.TestCase):
     def test(self):
         ts4.init('./', verbose = True)
         code = ts4.load_code_cell('TONTokenWalletNF.tvc')
-        _file = open("photo.jpeg","rb")
-        d = _file.read()
-        _file_data = gzip.compress(d,compresslevel=9)
-        _file_data = binascii.hexlify(_file_data).decode("utf-8")
+
         #_file_data = binascii.hexlify(b"5423").decode("utf-8")
         constructor = {
                     "name":ts4.Bytes("5423"),
                     "symbol":ts4.Bytes("5423"),
-                    "tokenURI":ts4.Bytes("5423"),
                     "decimals":0,
                     "root_public_key":self.public,
                     "wallet_code":code
@@ -30,20 +26,8 @@ class TestPair(unittest.TestCase):
                 # Create root token
         NFTtoken = ts4.BaseContract('RootTokenContractNF',constructor,pubkey=self.public,private_key=self.secret,nickname="NFT root token")
         ts4.dispatch_messages()
-        NFTtoken.call_method("mint",dict(tokenId=1,name=ts4.Bytes("54235423"),type=3,data=ts4.Bytes(_file_data[:500])),private_key=self.secret)
-        ts4.dispatch_messages()
-        NFTtoken.call_method("addBytes",dict(tokenId=1,data=ts4.Bytes(_file_data[500:600])),private_key=self.secret)
+        NFTtoken.call_method("mint",dict(tokenId=1,name=ts4.Bytes("54235423"),jsonMeta=ts4.Bytes("5423"),data=ts4.Address("0:" + "0" * 64)),private_key=self.secret)
         ts4.dispatch_messages()
         print(NFTtoken.call_getter("getInfoToken",dict(tokenId=1)))
-        data = NFTtoken.call_getter("getFile",dict(tokenId=1,index=1))
-        print(data.raw_)
-        print(len(d))
-        print(len(bytes.fromhex(data["data"].raw_)) )
-        _recieve_data = gzip.decompress(bytes.fromhex(data["data"].raw_))
-        _recieve = open("recieve.jpeg","wb")
-        
-        _recieve.write(_recieve_data)
-        _recieve.close()
-        Image.open("recieve.jpeg")
 if __name__ == '__main__':
     unittest.main()

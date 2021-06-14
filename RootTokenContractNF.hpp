@@ -60,7 +60,6 @@ __interface IRootTokenContract {
 struct DRootTokenContract {
   bytes name_;
   bytes symbol_;
-  bytes tokenURI_;
   uint8 decimals_;
   uint256 root_public_key_;
   TokensType total_supply_;
